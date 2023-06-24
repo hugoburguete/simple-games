@@ -6,21 +6,28 @@ import {
   xCoordinates,
 } from '../Board/Coordinate';
 import { Bishop } from '../Pieces/Bishop';
-import { King } from '../Pieces/King';
+import King from '../Pieces/King';
 import { Pawn } from '../Pieces/Pawn';
-import { BoardSide, Piece, PieceColor } from '../Pieces/Piece';
+import { Piece, PieceColor } from '../Pieces/Piece';
 import { Queen } from '../Pieces/Queen';
 import { Rook } from '../Pieces/Rook';
+import Player, { BoardSide } from '../Player/Player';
 import { GameJudge } from './GameJudge';
 import { GameLogEntry } from './GameLog';
 
 export class Game {
   board: Board;
+  players: Player[] = [];
+  turn: Player;
   gameJudge: GameJudge = new GameJudge();
   gameLog: GameLogEntry[] = [];
 
   constructor() {
     this.board = new Board();
+    const player1 = new Player(PieceColor.BLACK, BoardSide.TOP);
+    const player2 = new Player(PieceColor.WHITE, BoardSide.BOTTOM);
+    this.players = [player1, player2];
+    this.turn = player1;
   }
 
   /**
@@ -33,38 +40,45 @@ export class Game {
     // Create pawns
     (['2', '7'] as YCoordinate[]).forEach((y) => {
       xCoordinates.forEach((x) => {
-        const colour = y === '2' ? PieceColor.WHITE : PieceColor.BLACK;
-        const sideOfTheBoard = y === '2' ? BoardSide.TOP : BoardSide.BOTTOM;
-        pieces.push(new Pawn(colour, sideOfTheBoard, { x, y }));
+        const player = y === '2' ? this.players[0] : this.players[1];
+        pieces.push(new Pawn(player, { x, y }));
       });
     });
 
     (['1', '8'] as YCoordinate[]).forEach((y) => {
-      const colour = y === '1' ? PieceColor.WHITE : PieceColor.BLACK;
-      const sideOfTheBoard = y === '1' ? BoardSide.TOP : BoardSide.BOTTOM;
+      const player = y === '1' ? this.players[1] : this.players[0];
 
       // Kings
-      pieces.push(new King(colour, sideOfTheBoard, { y, x: 'E' }));
+      pieces.push(new King(player, { y, x: 'E' }));
 
       // Queens
-      pieces.push(new Queen(colour, sideOfTheBoard, { y, x: 'D' }));
+      pieces.push(new Queen(player, { y, x: 'D' }));
 
       // Bishops
       (['C', 'F'] as XCoordinate[]).forEach((x) => {
-        pieces.push(new Bishop(colour, sideOfTheBoard, { y, x }));
+        pieces.push(new Bishop(player, { y, x }));
       });
 
       // Knights
       (['B', 'G'] as XCoordinate[]).forEach((x) => {
-        pieces.push(new Bishop(colour, sideOfTheBoard, { y, x }));
+        pieces.push(new Bishop(player, { y, x }));
       });
 
       // Rooks
       (['A', 'H'] as XCoordinate[]).forEach((x) => {
-        pieces.push(new Rook(colour, sideOfTheBoard, { y, x }));
+        pieces.push(new Rook(player, { y, x }));
       });
     });
 
+    // Set player pieces
+    this.players[0].pieces = pieces.filter(
+      (piece) => piece.player === this.players[0]
+    );
+    this.players[1].pieces = pieces.filter(
+      (piece) => piece.player === this.players[1]
+    );
+
+    // Load board
     this.board.loadPieces(pieces);
   }
 

@@ -1,6 +1,7 @@
 import { Board } from '../Board/Board';
 import { BoardSlot } from '../Board/BoardSlot';
 import { Coordinate } from '../Board/Coordinate';
+import Player from '../Player/Player';
 
 export interface PieceInterface {
   getAvailableMoves(board: Board): BoardSlot[];
@@ -11,24 +12,13 @@ export enum PieceColor {
   WHITE = 'white',
 }
 
-export enum BoardSide {
-  TOP = 'top',
-  BOTTOM = 'bottom',
-}
-
 export class Piece implements PieceInterface {
-  sideOfTheBoard: BoardSide;
-  color: PieceColor;
   position: Coordinate;
+  player: Player;
 
-  constructor(
-    colour: PieceColor,
-    sideOfTheBoard: BoardSide,
-    position: Coordinate
-  ) {
-    this.color = colour;
+  constructor(player: Player, position: Coordinate) {
+    this.player = player;
     this.position = position;
-    this.sideOfTheBoard = sideOfTheBoard;
   }
 
   getAvailableMoves(board: Board): BoardSlot[] {

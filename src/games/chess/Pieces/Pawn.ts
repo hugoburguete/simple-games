@@ -1,7 +1,8 @@
 import { Board } from '../Board/Board';
 import { BoardSlot } from '../Board/BoardSlot';
 import { YCoordinate, xCoordinates, yCoordinates } from '../Board/Coordinate';
-import { BoardSide, Piece, PieceInterface } from './Piece';
+import { BoardSide } from '../Player/Player';
+import { Piece, PieceInterface } from './Piece';
 
 export class Pawn extends Piece implements PieceInterface {
   isFirstMove: boolean = true;
@@ -16,7 +17,7 @@ export class Pawn extends Piece implements PieceInterface {
     // Can we move 2 slots forward?
     if (this.isFirstMove) {
       const index =
-        this.sideOfTheBoard === BoardSide.TOP
+        this.player.sideOfTheBoard === BoardSide.TOP
           ? yCoordinates.indexOf(this.position.y) - 2
           : yCoordinates.indexOf(this.position.y) + 2;
       const slot = board.boardSlots.find(
@@ -32,7 +33,7 @@ export class Pawn extends Piece implements PieceInterface {
 
     let nextYSlot: YCoordinate | undefined;
 
-    if (this.sideOfTheBoard === BoardSide.TOP) {
+    if (this.player.sideOfTheBoard === BoardSide.TOP) {
       const nextYSlotIndex = yCoordinates.indexOf(this.position.y) - 1;
       if (nextYSlotIndex >= 0) {
         nextYSlot = yCoordinates[nextYSlotIndex];
