@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Game } from '../../games/chess/Game/Game';
 import ChessBoard from '../../components/Chess/ChessBoard';
+import { BoardInterface } from '../../games/chess/Board/Board';
 
 export const ChessPage: React.FC = () => {
   const [game, setGame] = useState<Game | null>(null);
+  const [board, setBoard] = useState<BoardInterface>();
 
   useEffect(() => {
     const newGame = new Game();
     newGame.startNewGame();
     setGame(newGame);
+    setBoard(newGame.board);
   }, []);
 
   if (!game) {
@@ -23,12 +26,12 @@ export const ChessPage: React.FC = () => {
             x: 'A',
             y: '3',
           });
-          console.log(game.board);
+          setBoard({ ...game.board });
         }}
       >
         Move piece
       </button>
-      <ChessBoard board={game.board} />
+      {board && <ChessBoard board={board} />}
     </div>
   );
 };

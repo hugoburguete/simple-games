@@ -1,12 +1,12 @@
 import React from 'react';
-import { Board } from '../../../games/chess/Board/Board';
+import { BoardInterface } from '../../../games/chess/Board/Board';
 import {
   xCoordinates,
   yCoordinates,
 } from '../../../games/chess/Board/Coordinate';
 
 export interface ChessBoardProps {
-  board: Board;
+  board: BoardInterface;
 }
 
 const ChessBoard: React.FC<ChessBoardProps> = ({ board }) => {
@@ -14,12 +14,17 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ board }) => {
 
   return (
     // Outer ring of the board
-    <div className="p-4 bg-brown-700">
+    <div className="p-4 pb-11 bg-brown-700 max-w-3xl">
       {/* Horizontal Letters */}
       <div className="h-7 flex justify-between items-center px-7">
         <div className="flex-1 flex">
           {xCoordinates.map((x) => (
-            <div className="flex-1 flex items-center justify-center">{x}</div>
+            <div
+              key={`horizontal-letter-${x}`}
+              className="flex-1 flex items-center justify-center"
+            >
+              {x}
+            </div>
           ))}
         </div>
       </div>
@@ -27,7 +32,12 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ board }) => {
         {/* Vertical numbers */}
         <div className="w-7 flex flex-col">
           {[...yCoordinates].reverse().map((y) => (
-            <div className="flex-1 flex justify-center items-center">{y}</div>
+            <div
+              key={`vertical-number-${y}`}
+              className="flex-1 flex justify-center items-center"
+            >
+              {y}
+            </div>
           ))}
         </div>
 
@@ -45,14 +55,15 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ board }) => {
 
                   return (
                     <div
-                      className={`flex-1 aspect-square ${
-                        i % 2 === 0 ? 'bg-slate-50' : 'bg-black'
+                      className={`flex-1 aspect-square flex justify-center items-center ${
+                        i % 2 === 0
+                          ? 'bg-slate-50 text-black'
+                          : 'bg-black text-slate-50'
                       }`}
                       key={`row-${x}-${y}`}
                     >
-                      {x}, {y}
                       {boardSlot?.piece && (
-                        <p>{boardSlot.piece.constructor.name}</p>
+                        <p>{boardSlot.piece.player.sideOfTheBoard}?</p>
                       )}
                     </div>
                   );

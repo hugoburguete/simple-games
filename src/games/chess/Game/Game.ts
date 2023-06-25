@@ -40,7 +40,7 @@ export class Game {
     // Create pawns
     (['2', '7'] as YCoordinate[]).forEach((y) => {
       xCoordinates.forEach((x) => {
-        const player = y === '2' ? this.players[0] : this.players[1];
+        const player = y === '2' ? this.players[1] : this.players[0];
         pieces.push(new Pawn(player, { x, y }));
       });
     });
@@ -101,15 +101,16 @@ export class Game {
     }
 
     // Move the piece
-    piece.position = newPosition;
     const oldBoardSlot = this.board.boardSlots.find(
       (slot) =>
         slot.coordinate.x === piece.position.x &&
         slot.coordinate.y === piece.position.y
     );
     if (oldBoardSlot) {
-      oldBoardSlot.piece = undefined;
+      this.board.boardSlots[this.board.boardSlots.indexOf(oldBoardSlot)].piece =
+        undefined;
     }
+    piece.position = newPosition;
     const newBoardSlot = this.board.boardSlots.find(
       (slot) =>
         slot.coordinate.x === newPosition.x &&

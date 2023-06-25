@@ -2,7 +2,13 @@ import { Piece } from '../Pieces/Piece';
 import { BoardSlot } from './BoardSlot';
 import { xCoordinates, yCoordinates } from './Coordinate';
 
-export class Board {
+export interface BoardInterface {
+  boardSlots: BoardSlot[];
+  pieces: Piece[];
+  piecesTaken: Piece[];
+}
+
+export class Board implements BoardInterface {
   boardSlots: BoardSlot[] = [];
   pieces: Piece[] = [];
   piecesTaken: Piece[] = [];
