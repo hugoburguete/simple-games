@@ -13,10 +13,22 @@ export interface DroppedEvent {
 }
 
 export interface ChessPieceProps {
+  /**
+   * The piece to render
+   */
   piece: Piece;
+
+  /**
+   * Event triggered when a piece drops in a square.
+   *
+   * @param e
+   */
   onDropped: (e: DroppedEvent) => void;
 }
 
+/**
+ * Chess piece Component
+ */
 const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
   const [initialPos, setInitialPos] = useState({
     x: 0,
@@ -37,6 +49,9 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
     });
   }, [ref]);
 
+  /**
+   * On mouse down event handler
+   */
   const onMouseDown = () => {
     setIsDragging(true);
     setInitialPos({
@@ -45,6 +60,9 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
     });
   };
 
+  /**
+   * On mouse move event handler
+   */
   const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (isDragging) {
       // Move in the centre of the piece
@@ -57,6 +75,9 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
     }
   };
 
+  /**
+   * On mouse up/leave event handler
+   */
   const onMouseUp: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!isDragging || !ref.current) {
       return;
@@ -103,13 +124,11 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
     >
-      <p>
-        <img
-          className="select-none pointer-events-none"
-          src="https://placehold.it/50x50"
-          alt=""
-        />
-      </p>
+      <img
+        className="select-none pointer-events-none"
+        src="https://placehold.it/50x50"
+        alt=""
+      />
     </div>
   );
 };
