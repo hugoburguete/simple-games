@@ -20,18 +20,16 @@ export const ChessPage: React.FC = () => {
 
   return (
     <div>
-      <button
-        onClick={() => {
-          game.movePiece(game.board.pieces[0], {
-            x: 'A',
-            y: '3',
-          });
-          setBoard({ ...game.board });
-        }}
-      >
-        Move piece
-      </button>
-      {board && <ChessBoard board={board} />}
+      {board && (
+        <ChessBoard
+          onPieceDropped={(e) => {
+            game.movePiece(e.piece, e.coordinate);
+
+            setBoard({ ...game.board });
+          }}
+          board={board}
+        />
+      )}
     </div>
   );
 };

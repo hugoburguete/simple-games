@@ -4,17 +4,21 @@ import {
   xCoordinates,
   yCoordinates,
 } from '../../../games/chess/Board/Coordinate';
+import Square from './Square';
+import ChessPiece from '../ChessPiece';
+import { DroppedEvent } from '../ChessPiece/ChessPiece';
 
 export interface ChessBoardProps {
   board: BoardInterface;
+  onPieceDropped: (e: DroppedEvent) => void;
 }
 
-const ChessBoard: React.FC<ChessBoardProps> = ({ board }) => {
+const ChessBoard: React.FC<ChessBoardProps> = ({ board, onPieceDropped }) => {
   let i = 0;
 
   return (
     // Outer ring of the board
-    <div className="p-4 pb-11 bg-brown-700 max-w-3xl">
+    <div className="select-none p-4 pb-11 bg-brown-700 max-w-3xl">
       {/* Horizontal Letters */}
       <div className="h-7 flex justify-between items-center px-7">
         <div className="flex-1 flex">
@@ -54,18 +58,20 @@ const ChessBoard: React.FC<ChessBoardProps> = ({ board }) => {
                   );
 
                   return (
-                    <div
-                      className={`flex-1 aspect-square flex justify-center items-center ${
-                        i % 2 === 0
-                          ? 'bg-slate-50 text-black'
-                          : 'bg-black text-slate-50'
-                      }`}
-                      key={`row-${x}-${y}`}
-                    >
-                      {boardSlot?.piece && (
-                        <p>{boardSlot.piece.player.sideOfTheBoard}?</p>
-                      )}
-                    </div>
+                    boardSlot && (
+                      <Square
+                        slot={boardSlot}
+                        colour={i % 2 === 0 ? 'white' : 'black'}
+                        key={`row-${x}-${y}`}
+                      >
+                        {boardSlot?.piece && (
+                          <ChessPiece
+                            onDropped={onPieceDropped}
+                            piece={boardSlot.piece}
+                          />
+                        )}
+                      </Square>
+                    )
                   );
                 })}
               </div>
