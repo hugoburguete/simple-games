@@ -4,7 +4,17 @@ import { Coordinate } from '../Board/Coordinate';
 import Player from '../Player/Player';
 
 export interface PieceInterface {
+  /**
+   * Retrieves possible moves.
+   *
+   * @param board
+   */
   getAvailableMoves(board: Board): BoardSlot[];
+
+  /**
+   * Actions to take after moving
+   */
+  postMove(): void;
 }
 
 export enum PieceColor {
@@ -23,5 +33,9 @@ export class Piece implements PieceInterface {
 
   getAvailableMoves(board: Board): BoardSlot[] {
     throw new Error('Method not implemented.');
+  }
+
+  postMove(): void {
+    // All good
   }
 }

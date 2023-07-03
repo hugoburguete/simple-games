@@ -2,13 +2,13 @@ import { Board } from '../Board/Board';
 import { BoardSlot } from '../Board/BoardSlot';
 import { YCoordinate, xCoordinates, yCoordinates } from '../Board/Coordinate';
 import { BoardSide } from '../Player/Player';
-import { Piece, PieceInterface } from './Piece';
+import { Piece } from './Piece';
 
-export class Pawn extends Piece implements PieceInterface {
+export class Pawn extends Piece {
   isFirstMove: boolean = true;
 
-  setIsFirstMove(isFirstMove: boolean): void {
-    this.isFirstMove = isFirstMove;
+  postMove(): void {
+    this.isFirstMove = false;
   }
 
   getAvailableMoves(board: Board): BoardSlot[] {
@@ -90,6 +90,7 @@ export class Pawn extends Piece implements PieceInterface {
       }
     }
 
+    console.log(availableMoves);
     return availableMoves;
   }
 
