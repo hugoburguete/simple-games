@@ -47,6 +47,7 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
 
   const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (isDragging) {
+      // Move in the centre of the piece
       const height = ref.current?.clientHeight ?? 0;
       const width = ref.current?.clientWidth ?? 0;
       setOffset({
@@ -57,32 +58,40 @@ const ChessPiece: React.FC<ChessPieceProps> = ({ piece, onDropped }) => {
   };
 
   const onMouseUp: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (isDragging) {
-      if (ref.current) {
-        // Detect drop
-        ref.current.hidden = true;
-
-        // Not a very "react-ey" way of doing it but works.
-        const elementBelow = document.elementFromPoint(e.pageX, e.pageY);
-        ref.current.hidden = false;
-
-        const droppableElementBelow = elementBelow?.closest(
-          `[data-game-element-type="${GAME_OBJECT_TYPE_SQUARE}"]`
-        );
-
-        if (droppableElementBelow) {
-          const coordinate = {
-            x: droppableElementBelow.getAttribute('data-x') as XCoordinate,
-            y: droppableElementBelow.getAttribute('data-y') as YCoordinate,
-          };
-
-          onDropped({ coordinate, piece });
-        }
-      }
-
-      setOffset({ x: 0, y: 0 });
-      setIsDragging(false);
+    if (!isDragging || !ref.current) {
+      return;
     }
+
+    // Detect drop
+    ref.current.hidden = true;
+
+    // Not a very "react-ey" way of doing it but works.
+    const elementBelow = document.elementFromPoint(e.pageX, e.pageY);
+    ref.current.hidden = false;
+
+    const droppableElementBelow = elementBelow?.closest(
+      `[data-game-element-type="${GAME_OBJECT_TYPE_SQUARE}"]`
+    );
+
+    // Reset offset and drag state
+    setOffset({ x: 0, y: 0 });
+    setIsDragging(false);
+
+    if (!droppableElementBelow) {
+      return;
+    }
+
+    const coordinate = {
+      x: droppableElementBelow.getAttribute('data-x') as XCoordinate,
+      y: droppableElementBelow.getAttribute('data-y') as YCoordinate,
+    };
+
+    // Has the piece moved squares?
+    if (JSON.stringify(coordinate) === JSON.stringify(piece.position)) {
+      return;
+    }
+
+    onDropped({ coordinate, piece });
   };
 
   return (
