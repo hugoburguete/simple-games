@@ -126,6 +126,8 @@ export class Game {
       newBoardSlot.piece = piece;
     }
 
+    piece.postMove();
+
     // Log the move
     if (oldBoardSlot && newBoardSlot) {
       this.gameLog.push({
