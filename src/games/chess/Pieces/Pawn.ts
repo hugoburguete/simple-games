@@ -1,6 +1,7 @@
 import { Board } from '../Board/Board';
 import { BoardSlot } from '../Board/BoardSlot';
 import { xCoordinates, yCoordinates } from '../Board/Coordinate';
+import { isOpponentPiece } from '../Game/helpers';
 import { BoardSide } from '../Player/Player';
 import { Piece } from './Piece';
 
@@ -43,6 +44,12 @@ export class Pawn extends Piece {
     return availableMoves;
   }
 
+  /**
+   * Returns the next available forward slot, or null if not available.
+   *
+   * @param board
+   * @returns
+   */
   getFreeForwardSlot = (board: Board): BoardSlot | null => {
     const yIncremenet = this.player.sideOfTheBoard === BoardSide.TOP ? -1 : 1;
     const nextYSlotIndex = yCoordinates.indexOf(this.position.y) + yIncremenet;
@@ -60,6 +67,12 @@ export class Pawn extends Piece {
     return null;
   };
 
+  /**
+   * Returns the next available 2 steps forward slot, or null if not available.
+   *
+   * @param board
+   * @returns
+   */
   get2StepForwardSlot = (board: Board): BoardSlot | null => {
     const index =
       this.player.sideOfTheBoard === BoardSide.TOP
@@ -78,6 +91,12 @@ export class Pawn extends Piece {
     return null;
   };
 
+  /**
+   * Returns the next slot left or right slot that has a vulnerable piece, or null if none is available.
+   *
+   * @param board
+   * @returns
+   */
   getDiagonalSlotWithOpponentPiece = (
     board: Board,
     leftOrRight: 'left' | 'right'
@@ -101,7 +120,7 @@ export class Pawn extends Piece {
       if (
         boardSlot &&
         boardSlot.piece &&
-        boardSlot.piece.player !== this.player
+        isOpponentPiece(this.player, boardSlot.piece)
       ) {
         diagonalSlot = boardSlot;
       }
