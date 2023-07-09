@@ -31,7 +31,10 @@ export class Pawn extends Piece {
 
     // Can we take side pieces?
     (['left', 'right'] as Array<'left' | 'right'>).forEach((side) => {
-      const diagonalSlotWithPiece = this.getDiagonalSlotWithPiece(board, side);
+      const diagonalSlotWithPiece = this.getDiagonalSlotWithOpponentPiece(
+        board,
+        side
+      );
       if (diagonalSlotWithPiece) {
         availableMoves.push(diagonalSlotWithPiece);
       }
@@ -75,7 +78,7 @@ export class Pawn extends Piece {
     return null;
   };
 
-  getDiagonalSlotWithPiece = (
+  getDiagonalSlotWithOpponentPiece = (
     board: Board,
     leftOrRight: 'left' | 'right'
   ): BoardSlot | null => {
@@ -95,7 +98,11 @@ export class Pawn extends Piece {
           slot.coordinate.x === diagonalX && slot.coordinate.y === diagonalY
       );
 
-      if (boardSlot && boardSlot.piece) {
+      if (
+        boardSlot &&
+        boardSlot.piece &&
+        boardSlot.piece.player !== this.player
+      ) {
         diagonalSlot = boardSlot;
       }
     }
