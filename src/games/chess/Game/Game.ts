@@ -4,7 +4,7 @@ import {
   XCoordinate,
   YCoordinate,
   xCoordinates,
-} from '../Board/Coordinate';
+} from '../utils/coordinate';
 import { Bishop } from '../Pieces/Bishop';
 import King from '../Pieces/King';
 import { Pawn } from '../Pieces/Pawn';
@@ -12,6 +12,7 @@ import { Piece, PieceColor } from '../Pieces/Piece';
 import { Queen } from '../Pieces/Queen';
 import { Rook } from '../Pieces/Rook';
 import Player, { BoardSide } from '../Player/Player';
+import { hasSamePosition } from '../utils/utils';
 import { GameJudge } from './GameJudge';
 import { GameLogEntry } from './GameLog';
 
@@ -101,21 +102,18 @@ export class Game {
     }
 
     // Move the piece
-    const oldBoardSlot = this.board.boardSlots.find(
-      (slot) =>
-        slot.coordinate.x === piece.position.x &&
-        slot.coordinate.y === piece.position.y
+    const boardSlots = this.board.boardSlots;
+    const oldBoardSlot = boardSlots.find((slot) =>
+      hasSamePosition(slot.coordinate, piece.position)
     );
     if (oldBoardSlot) {
-      this.board.boardSlots[this.board.boardSlots.indexOf(oldBoardSlot)].piece =
-        undefined;
+      boardSlots[boardSlots.indexOf(oldBoardSlot)].piece = undefined;
     }
     piece.position = newPosition;
-    const newBoardSlot = this.board.boardSlots.find(
-      (slot) =>
-        slot.coordinate.x === newPosition.x &&
-        slot.coordinate.y === newPosition.y
+    const newBoardSlot = boardSlots.find((slot) =>
+      hasSamePosition(slot.coordinate, newPosition)
     );
+
     if (newBoardSlot) {
       // Take opponent piece.
       if (newBoardSlot.piece) {

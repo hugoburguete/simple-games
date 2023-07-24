@@ -1,6 +1,6 @@
 import { Board } from '../Board/Board';
 import { BoardSlot } from '../Board/BoardSlot';
-import { Coordinate } from '../Board/Coordinate';
+import { Coordinate } from '../utils/coordinate';
 import Player from '../Player/Player';
 
 export interface PieceInterface {

@@ -1,4 +1,4 @@
-import { Coordinate } from '../Board/Coordinate';
+import { Coordinate } from '../utils/coordinate';
 import { Piece } from '../Pieces/Piece';
 
 export type GameLogEntry = {

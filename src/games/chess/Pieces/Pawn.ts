@@ -1,6 +1,6 @@
 import { Board } from '../Board/Board';
 import { BoardSlot } from '../Board/BoardSlot';
-import { xCoordinates, yCoordinates } from '../Board/Coordinate';
+import { xCoordinates, yCoordinates } from '../utils/coordinate';
 import { isOpponentPiece } from '../Game/helpers';
 import { BoardSide } from '../Player/Player';
 import { Piece } from './Piece';

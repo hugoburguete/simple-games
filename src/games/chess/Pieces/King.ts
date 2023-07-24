@@ -5,7 +5,7 @@ import {
   YCoordinate,
   xCoordinates,
   yCoordinates,
-} from '../Board/Coordinate';
+} from '../utils/coordinate';
 import { isAllyPiece } from '../Game/helpers';
 import { Piece, PieceInterface } from './Piece';
 
@@ -16,22 +16,18 @@ export default class King extends Piece implements PieceInterface {
     const getXSlots = (y: YCoordinate) => {
       const moves: BoardSlot[] = [];
       const possibleXPositions: XCoordinate[] = [];
-      if (xCoordinates.indexOf(this.position.x) > 0) {
-        possibleXPositions.push(
-          xCoordinates[xCoordinates.indexOf(this.position.x) - 1]
-        );
+      const xValue = xCoordinates.indexOf(this.position.x);
+
+      if (xValue > 0) {
+        possibleXPositions.push(xCoordinates[xValue - 1]);
       }
 
       if (this.position.y !== y) {
-        possibleXPositions.push(
-          xCoordinates[xCoordinates.indexOf(this.position.x)]
-        );
+        possibleXPositions.push(xCoordinates[xValue]);
       }
 
-      if (xCoordinates.indexOf(this.position.x) < xCoordinates.length) {
-        possibleXPositions.push(
-          xCoordinates[xCoordinates.indexOf(this.position.x) + 1]
-        );
+      if (xValue < xCoordinates.length) {
+        possibleXPositions.push(xCoordinates[xValue + 1]);
       }
 
       for (let i = 0; i < possibleXPositions.length; i++) {
@@ -54,10 +50,9 @@ export default class King extends Piece implements PieceInterface {
     };
 
     // Left row
-    if (yCoordinates.indexOf(this.position.y) > 0) {
-      const moves = getXSlots(
-        yCoordinates[yCoordinates.indexOf(this.position.y) - 1]
-      );
+    const yValue = yCoordinates.indexOf(this.position.y);
+    if (yValue > 0) {
+      const moves = getXSlots(yCoordinates[yValue - 1]);
       availableMoves = availableMoves.concat(moves);
     }
 
@@ -65,10 +60,8 @@ export default class King extends Piece implements PieceInterface {
     availableMoves = availableMoves.concat(getXSlots(this.position.y));
 
     // Right row
-    if (yCoordinates.indexOf(this.position.y) < yCoordinates.length) {
-      const moves = getXSlots(
-        yCoordinates[yCoordinates.indexOf(this.position.y) + 1]
-      );
+    if (yValue < yCoordinates.length) {
+      const moves = getXSlots(yCoordinates[yValue + 1]);
       availableMoves = availableMoves.concat(moves);
     }
 

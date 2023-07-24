@@ -1,6 +1,6 @@
 import { Piece } from '../Pieces/Piece';
 import { BoardSlot } from './BoardSlot';
-import { xCoordinates, yCoordinates } from './Coordinate';
+import { xCoordinates, yCoordinates } from '../utils/coordinate';
 
 export interface BoardInterface {
   boardSlots: BoardSlot[];

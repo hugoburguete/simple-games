@@ -5,7 +5,7 @@ import {
   Coordinate,
   XCoordinate,
   YCoordinate,
-} from '../../../games/chess/Board/Coordinate';
+} from '../../../games/chess/utils/coordinate';
 
 export interface DroppedEvent {
   coordinate: Coordinate;

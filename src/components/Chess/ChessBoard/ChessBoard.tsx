@@ -3,7 +3,7 @@ import { BoardInterface } from '../../../games/chess/Board/Board';
 import {
   xCoordinates,
   yCoordinates,
-} from '../../../games/chess/Board/Coordinate';
+} from '../../../games/chess/utils/coordinate';
 import Square from './Square';
 import ChessPiece from '../ChessPiece';
 import { DroppedEvent } from '../ChessPiece/ChessPiece';
